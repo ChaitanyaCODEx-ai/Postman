@@ -1,0 +1,194 @@
+LEVEL 1 - Flask Fundamentals
+CREATING AND MAKING BACKEND FOLDER WITH VIRTUAL ENVIRONMENT
+* ------------------------------------------------------------------------------------------------------------ *
+mkdir backend          -          learning	Create a folder
+cd backend             -          learning	Enter a folder
+code .	               -          Open current folder in VS Code
+python --version       -	      Check Python version
+python -m venv venv	   -          Create virtual environment
+venv\Scripts\activate  -          Activate virtual environment
+pip install flask	   -          Install Flask
+dir	                   -          List files in current directory
+* ------------------------------------------------------------------------------------------------------------ *
+* What is Flask?
+Flask is a Python web framework that allows developers to build web applications quickly and easily. 
+It is lightweight, flexible, and easy to use, making it a popular choice for building web applications 
+in Python. Flask provides tools and libraries for routing, templating, and handling HTTP requests and 
+responses, allowing developers to focus on writing application logic rather than dealing with low-level
+details.
+* ------------------------------------------------------------------------------------------------------------ *
+* Explain the 5 HTTP methods
+GET: give me the data.
+POST: create new data.
+PUT: update existing data.
+PATCH: partially update existing data.
+DELETE: remove data
+* ------------------------------------------------------------------------------------------------------------ *
+LEVEL 2 - Flask Routing & Request-Response Flow
+* CODE FOR FLASK UNDERSTANDING IT STEP BY STEP
+from flask import Flask ----> Importing the Flask class from the flask module. This class is used to create a Flask application instance.
+
+app = Flask(__name__) ------> This line creates our Flask application.
+                                Let's break it into two parts:
+                                    - Flask() creates the application.
+                                    - app stores that application in a variable.
+
+@app.route("/")   -----------> This line is a decorator that defines a route for the application. 
+                                The route "/" corresponds to the root URL of the application. 
+                                When a user visits this URL, the function defined below this decorator will be executed.
+def home():
+    return "Hello! My first backend is working!"
+
+if __name__ == "__main__":
+    app.run(debug=True) -----------> This starts the Flask development server. 
+                                2. debug=True
+                                    Debug mode helps developers while building applications.
+                                        It provides two useful features:
+                                            - Automatically reloads the server when you save code changes.
+                                            - Shows detailed error information when something goes wrong.
+
+* What is __name__?
+In Python, __name__ is a special built-in variable that represents the name of the current module. 
+When a Python script is run directly, the value of __name__ is set to "__main__". However, when a 
+script is imported as a module in another script, the value of __name__ is set to the name of that 
+module.
+It's a special Python variable that tells us the name of the current module. Flask uses it to identify 
+the application and locate resources such as templates and static files.
+
+* @app.route("/")
+The @ symbol introduces a Python decorator.
+A decorator modifies or extends the behaviour of a function. Flask uses this decorator to register the 
+URL route.
+For example:
+* URL	        Function
+/	            home()
+/students	    students()
+/courses	    courses()
+
+home() is still a normal Python function. Flask automatically calls it when a user visits the URL 
+mapped to it using @app.route("/")
+
+* HTTP Status Codes
+These codes tell us what happened to an HTTP request.
+Code	Meaning
+200	OK — Request successful
+201	Created — Resource created
+400	Bad Request
+401	Unauthorized
+403	Forbidden
+404	Not Found
+500	Internal Server Error
+* ------------------------------------------------------------------------------------------------------------ *
+LEVEL 3 -  Dynamic Routes
+Dynamic routes allow us to create URLs that accept changing values. Flask extracts those values from the URL and 
+passes them as arguments to the corresponding Python function.
+@app.route("/students/<int:student_id>")
+
+*   Route syntax	Accepted value
+    <int:id>	    Integer
+    <string:name>	String (default)
+    <float:price>	Decimal number
+    <path:location>	String that can include /
+* ------------------------------------------------------------------------------------------------------------ *
+Level 4 - Handling HTTP Requests in Flask
+Consider this URL:
+http://127.0.0.1:5000/search?name=Rahul 
+ 1. /search → Endpoint.
+ 2. name=Rahul → Query parameter.
+now for handling requests we have to also import request from the flask library.
+from flask import Flask, request
+
+request → Represents the incoming HTTP request.
+args → Contains query parameters from the URL.
+get("name") → Retrieves the value associated with the name parameter.
+* ------------------------------------------------------------------------------------------------------------ *
+Level 5 - JSON & API Responses
+JSON (JavaScript Object Notation) is a format used to store and exchange data between applications.
+The dictionary is a Python data structure. JSON is a data-exchange format.
+
+jsonify() converts Python data into a JSON HTTP response. Flask also sets the appropriate response 
+content type.
+
+@app.route("/students")
+def students():
+    students = [
+    {"name": "Aman", "age": 21},
+    {"name": "Rahul", "age": 20},
+    {"name": "Priya", "age": 22}
+]
+    return jsonify(students)
+
+JSON can represent both objects (like dictionaries) and arrays (like lists).
+1. JSON Object
+{
+    "name": "Aman",
+    "age": 21
+}
+2. JSON Array
+[
+    "Aman",
+    "Rahul",
+    "Priya"
+]
+[
+    {"name": "Aman", "age": 21},
+    {"name": "Rahul", "age": 20}
+]
+
+THIS IS AN OBJECT
+{
+    "students": [
+        {"name": "Aman"},
+        {"name": "Rahul"}
+    ],
+    "total": 2
+}
+The entire response starts with { → Object.
+"students" contains an Array [ ].
+Each student inside the array is an Object { }.
+"total" is a number.
+* ------------------------------------------------------------------------------------------------------------ *
+Level 6 - POST Requests & Data Submission
+This is where we'll move from simply retrieving data to actually sending data to our backend
+* GET	                                POST
+Retrieves data	                        Submits data
+Usually sends parameters in URL	        Usually sends data in request body
+Used to read information	            Commonly used to create resources
+POST data is not automatically secure. HTTPS is still necessary to protect data in transit.
+
+- URL tells the server which endpoint to contact.
+- Request body carries the data we want to submit.
+
+Remember, frontend sends JSON in the request body. Flask needs to read that data.
+We use:
+request.get_json() -----> This reads the JSON request body and converts it into a Python dictionary.
+
+@app.route("/register") ---> accepts GET requests by default
+@app.route("/register", methods=["POST"]) -----> To accept POST requests
+
+/register is the endpoint.
+methods=["POST"] tells Flask to accept POST requests on this endpoint
+
+* ------------------------------------------------------------------------------------------------------------ *    
+STUDY THE CODE
+@app.route("/register", methods=["POST"])
+def register():
+    data = request.get_json()
+
+    return jsonify({
+        "message": "Student registered successfully",
+        "name": data["name"],
+        "age": data["age"]
+    })
+
+1. Frontend sends a POST request to /register.
+2. request.get_json() reads the submitted JSON.
+3. data["name"] retrieves the student's name.
+4. data["age"] retrieves the student's age.
+5. jsonify() sends the response as JSON
+
+request.get_json() receives the JSON body.
+data.get("name") extracts the student's name.
+if name: checks whether a name was provided.
+jsonify(data) returns the submitted data as JSON.
+else handles a missing name.

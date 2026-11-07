@@ -1,0 +1,71 @@
+1. What is the difference between frontend and backend?
+Frontend: The part of an application that users see and interact with (buttons, forms, pages, layouts).
+Backend: Handles the application's logic, processes requests, communicates with databases, and sends 
+         responses to the frontend.
+
+2. What is an API?
+An API is a set of rules and interfaces that allows two software applications to communicate and 
+exchange data or services
+For example:
+You build a website.
+You want to show Google Maps on it.
+Your website sends a request to Google's Maps API.
+Google processes the request and sends the required data.
+Your website uses that data to display the map.
+
+3. What is Flask?
+Flask: Flask is a lightweight Python web framework used to build backend applications and APIs. It helps 
+handle HTTP requests, define URL routes, execute backend logic, and return responses to clients.
+Why not normal Python?
+Normal Python can perform calculations and logic, but it doesn't automatically provide a web server, 
+URL routing, or HTTP request handling.
+Flask provides these capabilities.
+
+4. Explain the 5 HTTP methods.
+GET: Retrieves data from the server. It is used to request information without modifying it.
+POST: Sends data to the server to create a new resource. It is used for submitting forms or creating new entries.
+PUT: Updates an existing resource on the server. It is used to modify data.
+PATCH: Partially updates an existing resource on the server. It is used to make partial changes to data.
+DELETE: Removes a resource from the server. It is used to delete data.
+
+GET: give me the data.
+POST: create new data.
+PUT: update existing data.
+PATCH: partially update existing data.
+DELETE: remove data.
+
+6. What is happening in this line app = Flask(__name__)?
+app → Variable that stores the Flask application instance.
+Flask() → Creates a Flask application instance.
+__name__ → Tells Flask which module the application belongs to.
+
+7. What is the purpose of the @app.route("/") decorator?
+The @app.route("/") decorator is used to define a route for the Flask application. It maps
+@app.route("/") → Registers the home URL.
+@app.route("/students") → Registers the students URL.
+
+8. Difference between print() and return in Flask?
+print() = Display something in the terminal.
+return = Give a value back from a function. In Flask, that value becomes the response sent to the browser.
+
+9. What is an HTTP Request?
+An HTTP request is a message sent by a client (such as a browser) to a server to request information or perform an action.
+Example:
+A user searches for a student named Rahul. The browser sends a request to the Flask backend.
+
+10. What are Query Parameters?
+Query parameters allow users to send additional information through a URL.
+Example: http://127.0.0.1:5000/search?name=Rahul
+/search = Endpoint
+? = Indicates the beginning of query parameters
+name = Parameter key
+Rahul = Parameter value
+
+11. What Happens When a Query Parameter Is Missing?
+Since the name parameter is missing, Flask returns None.
+
+12. What is input validation?
+Input validation means checking whether the data received from a user is present and valid before 
+processing it.
+This is basic input validation. Real applications may also check data type, length, format and other requirements.
+
